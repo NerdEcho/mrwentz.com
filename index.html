@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mrwentz.com</title>
+<meta name="description" content="Nothing here yet. Just an axolotl.">
+<meta name="theme-color" content="#04202f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23ffb3cb'/%3E%3Ccircle cx='10.5' cy='14' r='2' fill='%231b1020'/%3E%3Ccircle cx='21.5' cy='14' r='2' fill='%231b1020'/%3E%3Cpath d='M11 19q5 4 10 0' fill='none' stroke='%23c2416f' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    color: #e8f6f4;
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    background:
+      radial-gradient(120% 80% at 50% -10%, #1c6f7c 0%, rgba(28,111,124,0) 60%),
+      linear-gradient(180deg, #0a3a4c 0%, #04202f 55%, #02131d 100%);
+  }
+
+  /* light shafts from the surface */
+  .rays {
+    position: fixed; inset: -20% -10% 30% -10%;
+    background: repeating-linear-gradient(100deg,
+      rgba(190,240,235,0) 0 7%, rgba(190,240,235,.07) 9% 11%, rgba(190,240,235,0) 13% 20%);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 85%);
+            mask-image: linear-gradient(180deg, #000 0%, transparent 85%);
+    animation: drift 16s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  @keyframes drift { from { transform: translateX(-3%) skewX(-2deg); } to { transform: translateX(3%) skewX(2deg); } }
+
+  main {
+    position: relative; z-index: 2;
+    width: min(92vw, 640px);
+    padding: 2rem 1rem 4rem;
+    text-align: center;
+  }
+
+  .axolotl { width: min(78vw, 400px); height: auto; overflow: visible; animation: bob 6s ease-in-out infinite; }
+  @keyframes bob { 0%,100% { transform: translateY(-8px) rotate(-1.5deg); } 50% { transform: translateY(10px) rotate(1.5deg); } }
+
+  .gill { transform-box: fill-box; animation: sway 3.2s ease-in-out infinite alternate; }
+  .gill.l { transform-origin: 100% 50%; }
+  .gill.r { transform-origin: 0% 50%; animation-direction: alternate-reverse; }
+  .gill:nth-of-type(2) { animation-delay: -.8s; }
+  .gill:nth-of-type(3) { animation-delay: -1.6s; }
+  @keyframes sway { from { transform: rotate(-7deg); } to { transform: rotate(7deg); } }
+
+  .tail { transform-box: fill-box; transform-origin: 0% 40%; animation: wag 4s ease-in-out infinite alternate; }
+  @keyframes wag { from { transform: rotate(-6deg); } to { transform: rotate(8deg); } }
+
+  .eyes { transform-box: fill-box; transform-origin: center; animation: blink 5.5s infinite; }
+  @keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 96.5% { transform: scaleY(.1); } }
+
+  h1 {
+    margin: 1.2rem 0 .4rem;
+    font-size: clamp(2.2rem, 9vw, 4rem);
+    font-weight: 600;
+    letter-spacing: -.02em;
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+  h1 span { color: #ff9fbe; }
+  p {
+    margin: 0 auto;
+    max-width: 30ch;
+    font-size: clamp(1rem, 3.6vw, 1.2rem);
+    line-height: 1.5;
+    color: #a9cfd0;
+    text-wrap: pretty;
+  }
+
+  /* bubbles */
+  .bubbles { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+  .bubbles i {
+    position: absolute; bottom: -40px;
+    width: var(--s); height: var(--s); left: var(--x);
+    border-radius: 50%;
+    border: 1.5px solid rgba(200,245,240,.45);
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), rgba(255,255,255,0) 55%);
+    animation: rise var(--d) linear infinite;
+    animation-delay: var(--w);
+  }
+  @keyframes rise {
+    0%   { transform: translate(0, 0); opacity: 0; }
+    10%  { opacity: .9; }
+    50%  { transform: translate(14px, -55vh); }
+    100% { transform: translate(-10px, -112vh); opacity: 0; }
+  }
+
+  /* seabed */
+  .seabed { position: fixed; left: 0; right: 0; bottom: 0; width: 100%; height: 22vh; z-index: 1; pointer-events: none; }
+  .weed { transform-box: fill-box; transform-origin: 50% 100%; animation: sway 5s ease-in-out infinite alternate; }
+  .weed:nth-child(even) { animation-direction: alternate-reverse; animation-duration: 6.5s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; }
+    .bubbles { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="rays" aria-hidden="true"></div>
+
+<div class="bubbles" aria-hidden="true">
+  <i style="--x:8%;  --s:10px; --d:13s; --w:-2s"></i>
+  <i style="--x:19%; --s:18px; --d:17s; --w:-9s"></i>
+  <i style="--x:33%; --s:8px;  --d:11s; --w:-5s"></i>
+  <i style="--x:47%; --s:14px; --d:15s; --w:-12s"></i>
+  <i style="--x:61%; --s:9px;  --d:12s; --w:-1s"></i>
+  <i style="--x:72%; --s:20px; --d:19s; --w:-7s"></i>
+  <i style="--x:84%; --s:11px; --d:14s; --w:-10s"></i>
+  <i style="--x:93%; --s:15px; --d:16s; --w:-4s"></i>
+</div>
+
+<main>
+  <svg class="axolotl" viewBox="0 0 400 290" role="img" aria-label="A smiling pink axolotl floating in the water">
+    <!-- tail -->
+    <g class="tail">
+      <path d="M235 205 C 290 190, 340 215, 372 160 C 372 225, 315 262, 232 240 Z" fill="#ffc4d6"/>
+      <path d="M240 212 C 290 206, 335 218, 366 176 C 360 220, 310 244, 240 232 Z" fill="#ff9fbe"/>
+    </g>
+
+    <!-- legs -->
+    <g fill="#ff9fbe">
+      <ellipse cx="143" cy="232" rx="22" ry="10" transform="rotate(-28 143 232)"/>
+      <ellipse cx="257" cy="232" rx="22" ry="10" transform="rotate(28 257 232)"/>
+      <ellipse cx="160" cy="254" rx="18" ry="9" transform="rotate(-50 160 254)"/>
+      <ellipse cx="240" cy="254" rx="18" ry="9" transform="rotate(50 240 254)"/>
+    </g>
+
+    <!-- body -->
+    <ellipse cx="200" cy="212" rx="60" ry="46" fill="#ffb3cb"/>
+    <ellipse cx="200" cy="222" rx="36" ry="28" fill="#ffd9e5"/>
+
+    <!-- gills, left -->
+    <g fill="none" stroke-linecap="round">
+      <g class="gill l">
+        <path d="M122 100 Q 90 70 58 52" stroke="#e8457f" stroke-width="26" stroke-dasharray="2 7" opacity=".75"/>
+        <path d="M122 100 Q 90 70 58 52" stroke="#ff7fa8" stroke-width="12"/>
+      </g>
+      <g class="gill l">
+        <path d="M112 128 Q 78 122 40 118" stroke="#e8457f" stroke-width="26" stroke-dasharray="2 7" opacity=".75"/>
+        <path d="M112 128 Q 78 122 40 118" stroke="#ff7fa8" stroke-width="12"/>
+      </g>
+      <g class="gill l">
+        <path d="M120 156 Q 92 172 60 184" stroke="#e8457f" stroke-width="26" stroke-dasharray="2 7" opacity=".75"/>
+        <path d="M120 156 Q 92 172 60 184" stroke="#ff7fa8" stroke-width="12"/>
+      </g>
+    </g>
+    <!-- gills, right -->
+    <g fill="none" stroke-linecap="round">
+      <g class="gill r">
+        <path d="M278 100 Q 310 70 342 52" stroke="#e8457f" stroke-width="26" stroke-dasharray="2 7" opacity=".75"/>
+        <path d="M278 100 Q 310 70 342 52" stroke="#ff7fa8" stroke-width="12"/>
+      </g>
+      <g class="gill r">
+        <path d="M288 128 Q 322 122 360 118" stroke="#e8457f" stroke-width="26" stroke-dasharray="2 7" opacity=".75"/>
+        <path d="M288 128 Q 322 122 360 118" stroke="#ff7fa8" stroke-width="12"/>
+      </g>
+      <g class="gill r">
+        <path d="M280 156 Q 308 172 340 184" stroke="#e8457f" stroke-width="26" stroke-dasharray="2 7" opacity=".75"/>
+        <path d="M280 156 Q 308 172 340 184" stroke="#ff7fa8" stroke-width="12"/>
+      </g>
+    </g>
+
+    <!-- head -->
+    <ellipse cx="200" cy="128" rx="92" ry="66" fill="#ffb3cb"/>
+    <ellipse cx="200" cy="108" rx="70" ry="34" fill="#ffc4d6" opacity=".7"/>
+
+    <!-- face -->
+    <ellipse cx="143" cy="150" rx="15" ry="9" fill="#ff7fa8" opacity=".55"/>
+    <ellipse cx="257" cy="150" rx="15" ry="9" fill="#ff7fa8" opacity=".55"/>
+    <g class="eyes">
+      <circle cx="150" cy="124" r="9" fill="#1b1020"/>
+      <circle cx="250" cy="124" r="9" fill="#1b1020"/>
+      <circle cx="153" cy="121" r="3" fill="#fff"/>
+      <circle cx="253" cy="121" r="3" fill="#fff"/>
+    </g>
+    <path d="M166 148 Q 200 172 234 148" fill="none" stroke="#c2416f" stroke-width="4" stroke-linecap="round"/>
+  </svg>
+
+  <h1>mrwentz<span>.com</span></h1>
+  <p>Nothing to see here yet. For now, it&rsquo;s just the axolotl.</p>
+</main>
+
+<svg class="seabed" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true">
+  <g fill="none" stroke-linecap="round" stroke-width="10">
+    <path class="weed" d="M90 200 C 70 150, 110 120, 88 60" stroke="#17786f"/>
+    <path class="weed" d="M130 200 C 150 160, 115 130, 138 95" stroke="#0f5c5c"/>
+    <path class="weed" d="M1040 200 C 1020 150, 1065 115, 1042 50" stroke="#17786f"/>
+    <path class="weed" d="M1090 200 C 1110 160, 1075 135, 1098 100" stroke="#0f5c5c"/>
+    <path class="weed" d="M1140 200 C 1125 165, 1155 145, 1140 115" stroke="#1d8a7c"/>
+  </g>
+  <path d="M0 200 V160 C 150 135, 300 175, 480 158 S 820 130, 1000 156 S 1150 150, 1200 140 V200 Z" fill="#021019"/>
+</svg>
+</body>
+</html>
